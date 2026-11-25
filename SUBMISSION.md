@@ -88,8 +88,9 @@ Protocol Bank already operates an agent-commerce control plane with agent-scoped
 
 ## Demo video
 
-- 3–5 minutes, English narration or English subtitles
-- Link: `TBD`
+- 3–5 minutes, English narration
+- Link: `https://github.com/everest-an/protocol-bank-harbor/releases/download/v1.0-harbor/ubi-guard-demo.mp4`
+- Release page: `https://github.com/everest-an/protocol-bank-harbor/releases/tag/v1.0-harbor`
 
 ## Experience mode
 

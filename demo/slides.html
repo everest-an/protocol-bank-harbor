@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protocol Bank — UBI Guard slides</title>
+<style>
+  :root { --bg:#070b14; --panel:#0d1526; --line:#1e2d4a; --text:#e6eefc; --muted:#8fa3c4; --cyan:#38bdf8; --green:#34d399; --amber:#fbbf24; --red:#f87171; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; width:100%; height:100%; background:var(--bg); color:var(--text); font-family:"Segoe UI",Inter,system-ui,sans-serif; overflow:hidden; }
+  .slide { display:none; width:100vw; height:100vh; padding:64px 76px; background:
+      radial-gradient(1100px 600px at 80% -10%, #12305a 0%, transparent 60%),
+      radial-gradient(800px 500px at 0% 20%, #0d2a4a 0%, transparent 55%),
+      var(--bg); }
+  .slide.on { display:flex; flex-direction:column; justify-content:center; }
+  .kicker { color:var(--cyan); font-size:14px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:18px; }
+  h1 { font-size:64px; line-height:1.05; margin:0 0 18px; letter-spacing:-1.5px; }
+  h1 span { color:var(--cyan); }
+  h2 { font-size:46px; line-height:1.1; margin:0 0 18px; letter-spacing:-1px; }
+  h2 span { color:var(--cyan); }
+  p.lede { color:var(--muted); font-size:20px; max-width:70ch; line-height:1.5; margin:0; }
+  .meta { color:var(--muted); font-size:15px; margin-top:28px; }
+  .meta b { color:var(--text); font-weight:600; }
+  .cards { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
+  .card { background:linear-gradient(180deg,rgba(16,28,51,.92),rgba(10,18,34,.92)); border:1px solid var(--line); border-radius:16px; padding:22px 24px; }
+  .card .n { color:var(--cyan); font-size:13px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; }
+  .card h3 { margin:0 0 8px; font-size:22px; }
+  .card p { margin:0; color:var(--muted); font-size:15.5px; line-height:1.45; }
+  .bullets { margin:26px 0 0; padding:0; list-style:none; display:grid; gap:14px; }
+  .bullets li { display:flex; gap:14px; font-size:20px; color:#d6e2f7; }
+  .bullets li::before { content:"→"; color:var(--cyan); font-weight:700; }
+  .flow { display:flex; align-items:stretch; gap:12px; margin-top:34px; }
+  .box { flex:1; background:rgba(13,21,38,.9); border:1px solid var(--line); border-radius:14px; padding:20px 16px; text-align:center; }
+  .box .t { font-size:15px; font-weight:700; }
+  .box .s { font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .arrow { display:flex; align-items:center; color:var(--cyan); font-size:24px; }
+  .pill { display:inline-block; padding:4px 12px; border-radius:999px; border:1px solid rgba(52,211,153,.35); background:rgba(52,211,153,.08); color:var(--green); font-size:13px; margin-bottom:18px; }
+  .close { font-size:56px; line-height:1.1; letter-spacing:-1.2px; margin:0 0 22px; }
+  .close span { color:var(--cyan); }
+  .note { color:var(--muted); font-size:14.5px; line-height:1.6; }
+  .tag { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:6px 12px; color:var(--muted); font-size:12.5px; margin-right:8px; }
+</style>
+</head>
+<body>
+  <section class="slide" id="s1">
+    <div class="kicker">HARBOR 2026 · AI and trust infrastructure</div>
+    <h1>Protocol Bank<br /><span>UBI Guard</span></h1>
+    <p class="lede">Bounded spending mandates for AI agents on ME Network. A verified human delegates a budget; the agent cannot widen it.</p>
+    <div class="meta"><b>Team:</b> Protocol Bank &nbsp;·&nbsp; <b>Captain:</b> Everest An &nbsp;·&nbsp; <b>ME ID:</b> 2611229468093 &nbsp;·&nbsp; <b>Member:</b> AricRedemption 陈紫键</div>
+  </section>
+
+  <section class="slide" id="s2">
+    <div class="kicker">The problem</div>
+    <h2>Agents get a wallet.<br /><span>Not a mandate.</span></h2>
+    <p class="lede">When a human delegates a budget to an AI agent, the agent usually gets a private key and unrestricted access. There is no server-enforced limit between the human's intent and the agent's payment.</p>
+    <ul class="bullets">
+      <li>An agent can overspend the budget.</li>
+      <li>An agent can pay an unapproved vendor.</li>
+      <li>An agent can keep spending after the human revokes permission.</li>
+    </ul>
+  </section>
+
+  <section class="slide" id="s3">
+    <div class="kicker">The solution</div>
+    <h2>A mandate the agent<br /><span>cannot widen.</span></h2>
+    <div class="cards">
+      <div class="card"><div class="n">01 · Identity</div><h3>ME ID is the root</h3><p>The human is verified through the ME mainnet DID module. The mandate is bound to the ME ID and the captain wallet.</p></div>
+      <div class="card"><div class="n">02 · Policy</div><h3>Deny by default</h3><p>Vendor allowlist, per-transaction cap, monthly cap, expiry, and human approval are checked before a transaction is built.</p></div>
+      <div class="card"><div class="n">03 · Settlement</div><h3>MEC with an audit memo</h3><p>Approved payments are native MEC transfers on ME with the ME ID, mandate ID, agent ID, vendor, amount, and receipt hash.</p></div>
+      <div class="card"><div class="n">04 · Control</div><h3>Revoke instantly</h3><p>The human can revoke at any time. Every later request is blocked and recorded.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s4">
+    <div class="kicker">Architecture</div>
+    <h2>From human intent<br /><span>to on-chain settlement.</span></h2>
+    <div class="flow">
+      <div class="box"><div class="t">Human</div><div class="s">ME ID 2611229468093<br />creates the mandate</div></div>
+      <div class="arrow">→</div>
+      <div class="box"><div class="t">Mandate engine</div><div class="s">vendor allowlist<br />caps · approval · revoke</div></div>
+      <div class="arrow">→</div>
+      <div class="box"><div class="t">ME settlement</div><div class="s">MsgSend + memo<br />mainnet / testnet</div></div>
+      <div class="arrow">→</div>
+      <div class="box"><div class="t">Vendor</div><div class="s">MEC received<br />audit receipt</div></div>
+    </div>
+    <p class="note" style="margin-top:26px">The official ME Bridge adapter covers BSC/TRON USDC/USDT → ME. It does not mint MEC; MEC is the native gas token.</p>
+  </section>
+
+  <section class="slide" id="s5">
+    <div class="pill">Live mandate</div>
+    <h2>One policy engine.<br /><span>Five decisions.</span></h2>
+    <p class="lede">Approved inside the mandate. Blocked over the cap. Held for human approval. Accepted after approval. Blocked after revoke.</p>
+    <div class="meta">Mandate <b>mandate-fecb80c3</b> · Agent <b>agent-data-01</b> · Vendor <b>me1rnr…f8qge</b></div>
+  </section>
+
+  <section class="slide" id="s6">
+    <div class="pill">ME Network evidence</div>
+    <h2>Live mainnet call record.</h2>
+    <p class="lede">Chain <b>me-chain</b> · block <b>16,229,680</b> · ME ID <b>2611229468093</b> · DID <b>DID_STATUS_ACTIVE</b> · treasury <b>me1dpp…fd757</b>.</p>
+    <p class="note" style="margin-top:18px">The record is SHA-256 hashed. The treasury is awaiting a small MEC gas top-up before the first mainnet settlement.</p>
+  </section>
+
+  <section class="slide" id="s7">
+    <div class="pill">Official ME Bridge</div>
+    <h2>USDC/USDT in.<br /><span>MEC is separate.</span></h2>
+    <p class="lede">The adapter uses the official Meta Earth Bridge at <b>bridge.mec.me</b>. BSC and TRON USDC/USDT → ME, minimum 1 USDC. It records the source and destination transaction hashes. It does not custody funds or reimplement the bridge.</p>
+    <p class="note" style="margin-top:18px">Important: the bridge does not mint MEC. Bridged USDC still needs a swap to MEC for gas.</p>
+  </section>
+
+  <section class="slide" id="s8">
+    <div class="kicker">Protocol Bank · HARBOR 2026</div>
+    <div class="close">Your ME ID.<br />Your budget.<br /><span>Your agent cannot widen it.</span></div>
+    <p class="lede">Repository: github.com/everest-an/protocol-bank-harbor · Commit fa1ecce · Run <b>node build/demo.js</b> to reproduce the policy flow.</p>
+    <div style="margin-top:24px"><span class="tag">ME ID</span><span class="tag">MEC settlement</span><span class="tag">Official ME Bridge</span><span class="tag">Deny by default</span></div>
+  </section>
+
+  <script>
+    const n = Number(new URLSearchParams(location.search).get('s') || '1');
+    document.getElementById('s' + n)?.classList.add('on');
+  </script>
+</body>
+</html>

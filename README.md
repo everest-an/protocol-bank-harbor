@@ -153,4 +153,6 @@ run-records/           mainnet call records and settlement records
 Required materials and the project description are in `SUBMISSION.md`.
 
 - Repository: `https://github.com/everest-an/protocol-bank-harbor`
-- Final commit: `5b2a69d`
+- Final commit: latest `master`
+- Demo video: `https://github.com/everest-an/protocol-bank-harbor/releases/download/v1.0-harbor/ubi-guard-demo.mp4`
+- Local dashboard: `node demo/serve.js` → `http://localhost:8787`

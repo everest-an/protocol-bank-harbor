@@ -1,0 +1,17 @@
+file 'E:/HARBOR/demo/frames/1920/01-title.png'
+duration 18
+file 'E:/HARBOR/demo/frames/1920/02-problem.png'
+duration 40
+file 'E:/HARBOR/demo/frames/1920/03-solution.png'
+duration 42
+file 'E:/HARBOR/demo/frames/1920/04-architecture.png'
+duration 30
+file 'E:/HARBOR/demo/frames/1920/05-top.png'
+duration 40
+file 'E:/HARBOR/demo/frames/1920/06-mid.png'
+duration 40
+file 'E:/HARBOR/demo/frames/1920/07-bottom.png'
+duration 55
+file 'E:/HARBOR/demo/frames/1920/08-close.png'
+duration 20
+file 'E:/HARBOR/demo/frames/1920/08-close.png'

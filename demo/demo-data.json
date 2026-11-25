@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-11-25T11:40:47.054Z",
+  "project": "Protocol Bank UBI Guard",
+  "team": {
+    "name": "Protocol Bank",
+    "captain": "Everest An",
+    "meId": "2611229468093",
+    "captainWallet": "me1ken8mcs8r7eklv23c7k7swgf3kgph3maasgk9h",
+    "member": "AricRedemption 陈紫键"
+  },
+  "mandate": {
+    "id": "mandate-fecb80c3",
+    "meId": "2611229468093",
+    "agentId": "agent-data-01",
+    "vendor": "me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge",
+    "perTxCapMec": "0.00020000",
+    "monthlyCapMec": "0.00060000",
+    "approvalThresholdMec": "0.00012000",
+    "expiresAt": "2026-12-25T11:40:47.050Z",
+    "active": false,
+    "revokedAt": "2026-11-25T11:40:47.053Z"
+  },
+  "decisions": [
+    {
+      "label": "Approved agent payment",
+      "amountUmec": 10000,
+      "amountMec": "0.00010000",
+      "approved": true,
+      "reason": null,
+      "requiresApproval": false,
+      "approvedBy": null,
+      "memo": "PB|meid:2611229468093|mandate:mandate-fecb80c3|agent:agent-data-01|vendor:me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge|amount:10000|receipt:demo-receipt-001"
+    },
+    {
+      "label": "Over-cap payment",
+      "amountUmec": 50000,
+      "amountMec": "0.00050000",
+      "approved": false,
+      "reason": "per-transaction cap exceeded",
+      "requiresApproval": false,
+      "approvedBy": null,
+      "memo": null
+    },
+    {
+      "label": "Above approval threshold",
+      "amountUmec": 15000,
+      "amountMec": "0.00015000",
+      "approved": false,
+      "reason": "human approval required",
+      "requiresApproval": true,
+      "approvedBy": null,
+      "memo": null
+    },
+    {
+      "label": "Human approved payment",
+      "amountUmec": 15000,
+      "amountMec": "0.00015000",
+      "approved": true,
+      "reason": null,
+      "requiresApproval": false,
+      "approvedBy": "human:2611229468093",
+      "memo": "PB|meid:2611229468093|mandate:mandate-fecb80c3|agent:agent-data-01|vendor:me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge|amount:15000|receipt:demo-receipt-003"
+    },
+    {
+      "label": "After human revoke",
+      "amountUmec": 2000,
+      "amountMec": "0.00002000",
+      "approved": false,
+      "reason": "mandate revoked",
+      "requiresApproval": false,
+      "approvedBy": null,
+      "memo": null
+    }
+  ],
+  "mainnetRecord": {
+    "file": "run-records/mainnet-call-2026-11-25T10-38-44-489Z.json",
+    "chainId": "me-chain",
+    "blockHeight": 16229680,
+    "recordHash": "ec9ac4701e6c986e2292ebafe87d208defe680e683c9e9981ad7e446e6e4f561",
+    "did": "2611229468093",
+    "didStatus": "DID_STATUS_ACTIVE",
+    "treasury": "me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757",
+    "treasuryUmec": "0"
+  },
+  "bridge": {
+    "bridge": "Meta Earth Bridge (official)",
+    "bridgeUrl": "https://bridge.mec.me/",
+    "sourceChain": "BSC",
+    "asset": "USDC",
+    "amount": 1,
+    "recipient": "me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757",
+    "steps": [
+      "Open https://bridge.mec.me/",
+      "Connect the BSC wallet that holds USDC",
+      "Select BSC -> Meta Earth",
+      "Select USDC and amount 1",
+      "Set recipient to me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757",
+      "Confirm the bridge transaction and pay the source-chain gas",
+      "Save the source transaction hash and the Meta Earth mint transaction hash",
+      "After USDC arrives on Meta Earth, swap it to MEC in ME Pass / UnitySwap before using it for gas"
+    ],
+    "notes": [
+      "The official bridge supports USDC/USDT from BSC and TRON to Meta Earth.",
+      "The bridge does not mint MEC. MEC is the native gas token and must be obtained separately.",
+      "Minimum bridge amount shown by the official UI is 1 USDC/USDT; maximum is 100,000.",
+      "Never send USDC/USDT directly to a me1... address outside the official bridge."
+    ]
+  },
+  "settlement": {
+    "mainnet": {
+      "status": "pending gas funding",
+      "amountMec": "0.00010000",
+      "feeMec": "0.00005000",
+      "memo": "PB|meid:2611229468093|mandate:mandate-fecb80c3|agent:agent-data-01|vendor:me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge|amount:10000|receipt:demo-receipt-001"
+    },
+    "testnet": {
+      "status": "pending faucet claim",
+      "chainId": "mechain_400-1",
+      "txHash": null
+    }
+  }
+}

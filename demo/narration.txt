@@ -1,0 +1,23 @@
+Protocol Bank UBI Guard. HARBOR 2026. AI and trust infrastructure.
+
+ME Network gives every verified human an identity and a UBI budget. But when that human delegates the budget to an AI agent, there is no safe spending layer. The agent usually gets a wallet and a private key. It can overspend, pay the wrong vendor, or keep spending after the human has revoked permission.
+
+UBI Guard fixes the spending side. A verified ME ID holder creates a mandate. The mandate names the agent, the approved vendors, a per-transaction cap, a monthly cap, an expiry, and a human approval threshold. The agent can request a payment, but the mandate engine checks every request before a transaction is built. If the request is outside the mandate, it is blocked. If it is above the approval threshold, it waits for the human. The human can revoke at any time.
+
+The human root of trust is the ME ID. In the demo, the captain ME ID is 2611229468093. The engine queries the ME mainnet DID module and verifies that the ME ID is active and bound to the captain wallet. The settlement asset is MEC. The audit anchor is ME mainnet.
+
+Here is the live mandate. The agent is agent-data-01. The vendor is the demo vendor wallet. The per-transaction cap is 0.0002 MEC, the monthly cap is 0.0006 MEC, and payments above 0.00012 MEC require human approval. These caps are deliberately small for a live demo, but the same engine scales to any budget.
+
+The policy decisions show the core behavior. The first request is inside the mandate, so it is approved. The second request is over the per-transaction cap, so it is blocked before any transaction is created. The third request is above the approval threshold, so it is not rejected, it is held for human approval. The fourth request includes the human approval and is accepted. Then the human revokes the mandate, and the fifth request is blocked immediately. This is deny by default, server enforced spending control.
+
+Every approved payment produces a structured memo. The memo contains the ME ID, the mandate ID, the agent ID, the vendor, the amount, and the receipt hash. The settlement adapter signs a native MEC transfer on ME mainnet with that memo, so the payment and the policy decision are linked on chain.
+
+This is the mainnet call record. We queried ME mainnet at block 16,229,680. The chain ID is me-chain. The ME ID is active, KYC level one, and bound to the captain wallet. The treasury is me1dpp, ending in fd757. At record time the treasury had zero MEC, so the record shows the live chain and identity state, and the settlement is marked pending gas funding. The record is hashed with SHA-256, so judges can verify the exact payload.
+
+We also built the official ME Bridge adapter. It uses the official Meta Earth Bridge at bridge.mec.me. It supports BSC and TRON USDC and USDT to ME, with a minimum of one USDC. The adapter builds the request, validates the ME recipient, and records the source and destination transaction hashes. It does not custody funds and it does not reimplement the bridge. Important, the official bridge does not mint MEC. MEC is the native gas token and must be obtained separately.
+
+For execution, the project is a small Node.js service. The repository contains the mandate engine, the settlement adapter, the official bridge adapter, and the run record generator. The README has the exact commands. The policy demo runs without a wallet. The settlement adapter supports a dry run and a real signed transfer. The repo also includes a local dashboard, which is what you are seeing now.
+
+The roadmap is straightforward. First, bind the mandate to the ME ID sub-account and add a policy registry on ME. Second, add vendor receipts and recurring subscriptions. Third, open the mandate API to other agent frameworks, so any agent can request a payment and any human can approve or revoke it from ME Pass.
+
+Protocol Bank is the control plane for agent commerce. UBI Guard is the spending layer for the ME agent economy. Thank you.

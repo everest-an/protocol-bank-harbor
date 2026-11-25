@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Protocol Bank — UBI Guard</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: #0d1526;
+      --panel2: #101c33;
+      --line: #1e2d4a;
+      --text: #e6eefc;
+      --muted: #8fa3c4;
+      --cyan: #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --violet: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 75% -10%, #12305a 0%, transparent 60%),
+                  radial-gradient(900px 500px at 0% 20%, #0d2a4a 0%, transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 34px 28px 70px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 34px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), #2563eb);
+      display: grid; place-items: center; font-weight: 800; color: #06101f;
+      box-shadow: 0 0 30px rgba(56,189,248,.35);
+    }
+    .brand h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+    .brand p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+    .badge {
+      border: 1px solid var(--line); background: rgba(13,21,38,.8);
+      padding: 7px 12px; border-radius: 999px; color: var(--muted); font-size: 12px;
+    }
+    .badge b { color: var(--cyan); font-weight: 600; }
+    .hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: 22px; margin-bottom: 22px; }
+    .card {
+      background: linear-gradient(180deg, rgba(16,28,51,.92), rgba(10,18,34,.92));
+      border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
+    .kicker { color: var(--cyan); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+    h2 { font-size: 34px; line-height: 1.12; margin: 0 0 12px; letter-spacing: -.5px; }
+    h2 span { color: var(--cyan); }
+    .lede { color: var(--muted); font-size: 14.5px; max-width: 62ch; margin: 0; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+    .stat { background: rgba(7,11,20,.55); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+    .stat .k { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    .stat .v { font-size: 15px; margin-top: 5px; font-weight: 600; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .section-title { display: flex; align-items: center; gap: 10px; margin: 26px 0 12px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; }
+    .section-title::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+    .row { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; border-bottom: 1px solid rgba(30,45,74,.55); font-size: 13px; }
+    .row:last-child { border-bottom: 0; }
+    .row .l { color: var(--muted); }
+    .row .r { text-align: right; font-family: "Cascadia Code", Consolas, monospace; font-size: 12px; word-break: break-all; }
+    .decision { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid rgba(30,45,74,.55); }
+    .decision:last-child { border-bottom: 0; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 6px; flex: none; box-shadow: 0 0 12px currentColor; }
+    .ok { color: var(--green); background: var(--green); }
+    .no { color: var(--red); background: var(--red); }
+    .warn { color: var(--amber); background: var(--amber); }
+    .d-title { font-size: 13.5px; font-weight: 600; }
+    .d-meta { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; }
+    .pill.ok { color: var(--green); border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.08); }
+    .pill.no { color: var(--red); border-color: rgba(248,113,113,.35); background: rgba(248,113,113,.08); }
+    .pill.warn { color: var(--amber); border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.08); }
+    .memo { margin-top: 10px; background: #070c16; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; color: #9fd7ff; overflow-wrap: anywhere; }
+    .evidence { display: grid; gap: 10px; }
+    .ev { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; }
+    .ev .l { color: var(--muted); }
+    .ev .r { font-family: "Cascadia Code", Consolas, monospace; text-align: right; }
+    .code { background: #070c16; border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-family: "Cascadia Code", Consolas, monospace; font-size: 12px; color: #c7e7ff; overflow-x: auto; white-space: pre; }
+    footer { margin-top: 28px; color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    @media (max-width: 900px) {
+      .hero, .grid, .grid3 { grid-template-columns: 1fr; }
+      h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="mark">PB</div>
+        <div>
+          <h1>Protocol Bank</h1>
+          <p>UBI Guard — agent spending mandates on ME Network</p>
+        </div>
+      </div>
+      <div class="badge">HARBOR 2026 · <b>AI &amp; Trust Infrastructure</b></div>
+    </header>
+
+    <div class="hero">
+      <div class="card">
+        <div class="kicker">Human-owned agent budget</div>
+        <h2>Your ME ID. Your budget.<br /><span>Your agent cannot widen it.</span></h2>
+        <p class="lede">
+          A verified human delegates a bounded MEC budget to an AI agent. The agent can pay approved services only
+          inside the mandate: vendor allowlist, per-transaction cap, monthly cap, expiry, human approval, and instant revoke.
+          Every settlement is a native MEC transfer on ME with an audit memo.
+        </p>
+        <div class="stats">
+          <div class="stat"><div class="k">Human root of trust</div><div class="v">ME ID <span id="meId">—</span></div></div>
+          <div class="stat"><div class="k">Settlement asset</div><div class="v">MEC · <span id="chainId">me-chain</span></div></div>
+          <div class="stat"><div class="k">Mandate status</div><div class="v"><span id="mandateStatus" class="pill">—</span></div></div>
+          <div class="stat"><div class="k">Policy engine</div><div class="v">Deny by default</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Live mandate</div>
+        <div class="row"><div class="l">Mandate</div><div class="r" id="mandateId">—</div></div>
+        <div class="row"><div class="l">Agent</div><div class="r" id="agentId">—</div></div>
+        <div class="row"><div class="l">Vendor</div><div class="r" id="vendor">—</div></div>
+        <div class="row"><div class="l">Per-transaction cap</div><div class="r" id="perTx">—</div></div>
+        <div class="row"><div class="l">Monthly cap</div><div class="r" id="monthly">—</div></div>
+        <div class="row"><div class="l">Human approval above</div><div class="r" id="threshold">—</div></div>
+        <div class="row"><div class="l">Expires</div><div class="r" id="expires">—</div></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="kicker">Policy decisions</div>
+        <div id="decisions"></div>
+      </div>
+      <div class="card">
+        <div class="kicker">Settlement &amp; audit</div>
+        <div class="row"><div class="l">Mainnet settlement</div><div class="r" id="mainnetStatus">—</div></div>
+        <div class="row"><div class="l">Amount</div><div class="r" id="settleAmount">—</div></div>
+        <div class="row"><div class="l">Fee</div><div class="r" id="settleFee">—</div></div>
+        <div class="row"><div class="l">Testnet chain</div><div class="r" id="testnetChain">—</div></div>
+        <div class="row"><div class="l">Testnet tx</div><div class="r" id="testnetTx">pending</div></div>
+        <div class="memo" id="memo">—</div>
+      </div>
+    </div>
+
+    <div class="section-title">ME Network evidence</div>
+    <div class="grid3">
+      <div class="card evidence">
+        <div class="kicker">Mainnet call record</div>
+        <div class="ev"><div class="l">Chain</div><div class="r" id="evChain">—</div></div>
+        <div class="ev"><div class="l">Block</div><div class="r" id="evBlock">—</div></div>
+        <div class="ev"><div class="l">DID status</div><div class="r" id="evDid">—</div></div>
+        <div class="ev"><div class="l">Treasury</div><div class="r" id="evTreasury">—</div></div>
+        <div class="ev"><div class="l">Record hash</div><div class="r" id="evHash">—</div></div>
+      </div>
+      <div class="card evidence">
+        <div class="kicker">Official ME Bridge</div>
+        <div class="ev"><div class="l">Bridge</div><div class="r" id="brName">—</div></div>
+        <div class="ev"><div class="l">Route</div><div class="r" id="brRoute">—</div></div>
+        <div class="ev"><div class="l">Minimum</div><div class="r" id="brMin">—</div></div>
+        <div class="ev"><div class="l">Recipient</div><div class="r" id="brTo">—</div></div>
+        <div class="ev"><div class="l">Note</div><div class="r" id="brNote">—</div></div>
+      </div>
+      <div class="card evidence">
+        <div class="kicker">Reproduce</div>
+        <div class="code">npm install
+node build/demo.js
+node build/record-mainnet.js
+node build/bridge-demo.js</div>
+        <div class="ev" style="margin-top:10px"><div class="l">Repo</div><div class="r">github.com/everest-an/protocol-bank-harbor</div></div>
+        <div class="ev"><div class="l">Commit</div><div class="r">fa1ecce</div></div>
+      </div>
+    </div>
+
+    <footer>
+      <div>Protocol Bank · UBI Guard · HARBOR 2026</div>
+      <div>ME ID 2611229468093 · treasury me1dpp…fd757</div>
+    </footer>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const fmt = (v) => v ?? '—';
+
+    fetch('./demo-data.json')
+      .then((r) => r.json())
+      .then((d) => {
+        $('meId').textContent = d.team.meId;
+        $('chainId').textContent = d.mainnetRecord.chainId;
+        $('mandateStatus').textContent = d.mandate.active ? 'active' : 'revoked';
+        $('mandateStatus').className = 'pill ' + (d.mandate.active ? 'ok' : 'no');
+        $('mandateId').textContent = d.mandate.id;
+        $('agentId').textContent = d.mandate.agentId;
+        $('vendor').textContent = d.mandate.vendor;
+        $('perTx').textContent = d.mandate.perTxCapMec + ' MEC';
+        $('monthly').textContent = d.mandate.monthlyCapMec + ' MEC';
+        $('threshold').textContent = d.mandate.approvalThresholdMec + ' MEC';
+        $('expires').textContent = d.mandate.expiresAt.slice(0, 10);
+
+        const decisions = $('decisions');
+        d.decisions.forEach((x) => {
+          const el = document.createElement('div');
+          el.className = 'decision';
+          const cls = x.approved ? 'ok' : (x.requiresApproval ? 'warn' : 'no');
+          const pill = x.approved
+            ? '<span class="pill ok">approved</span>'
+            : (x.requiresApproval ? '<span class="pill warn">needs human</span>' : '<span class="pill no">blocked</span>');
+          el.innerHTML = `
+            <div class="dot ${cls}"></div>
+            <div>
+              <div class="d-title">${x.label} ${pill}</div>
+              <div class="d-meta">${x.amountMec} MEC${x.reason ? ' · ' + x.reason : ''}${x.approvedBy ? ' · ' + x.approvedBy : ''}</div>
+            </div>`;
+          decisions.appendChild(el);
+        });
+
+        $('mainnetStatus').textContent = d.settlement.mainnet.status;
+        $('settleAmount').textContent = d.settlement.mainnet.amountMec + ' MEC';
+        $('settleFee').textContent = d.settlement.mainnet.feeMec + ' MEC';
+        $('testnetChain').textContent = d.settlement.testnet.chainId;
+        $('testnetTx').textContent = d.settlement.testnet.txHash || 'pending faucet claim';
+        $('memo').textContent = d.settlement.mainnet.memo;
+
+        $('evChain').textContent = d.mainnetRecord.chainId;
+        $('evBlock').textContent = d.mainnetRecord.blockHeight;
+        $('evDid').textContent = d.mainnetRecord.didStatus;
+        $('evTreasury').textContent = d.mainnetRecord.treasuryUmec + ' umec';
+        $('evHash').textContent = d.mainnetRecord.recordHash.slice(0, 18) + '…';
+
+        $('brName').textContent = d.bridge.bridge;
+        $('brRoute').textContent = d.bridge.sourceChain + ' → ME';
+        $('brMin').textContent = d.bridge.amount + ' ' + d.bridge.asset;
+        $('brTo').textContent = d.bridge.recipient.slice(0, 12) + '…';
+        $('brNote').textContent = 'USDC/USDT only · no MEC';
+      })
+      .catch((e) => {
+        document.body.insertAdjacentHTML('beforeend', '<pre style="color:#f87171;padding:20px">' + e + '</pre>');
+      });
+  </script>
+</body>
+</html>
