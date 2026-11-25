@@ -29,6 +29,15 @@ ME gives verified humans an identity and a budget. It does not yet give them a s
 4. **Instant revoke** — the human can revoke the mandate; all later requests are denied.
 5. **MEC settlement with audit memo** — approved payments are native MEC transfers on ME with a memo containing the ME ID, mandate ID, agent ID, vendor, amount, and receipt hash.
 6. **Official ME Bridge adapter** — builds and records BSC/TRON USDC/USDT → ME bridge requests using the official Meta Earth Bridge. The adapter does not custody funds or reimplement the bridge.
+7. **Pilot API and console** — a non-custodial REST API with mandate/intent state machines, human approval, settlement recording, idempotency, API-key auth, and a SHA-256 audit chain; plus a local console for the full flow.
+
+### Commercial model
+
+- **Buyer:** AI agent platforms, AI-native SaaS, and enterprises deploying agent workflows.
+- **Pricing:** $99 Starter / $499 Growth / enterprise SaaS, plus 10 bps on settled volume.
+- **Pilot:** 3 design partners, 90 days, no platform fee, 10 bps settlement fee.
+- **Positioning:** the authorization/audit layer above payment rails (AllScale, stablecoin neobanks, card issuers), not a neobank and not a UBI distributor.
+- **Compliance posture:** non-custodial software; no customer funds, no private keys, no card issuance.
 
 ### ME access methods
 
@@ -48,7 +57,8 @@ Protocol Bank already operates an agent-commerce control plane with agent-scoped
 - UBI Guard mandate engine and demo flow (approve, over-cap block, human approval, revoke).
 - Official ME Bridge adapter and request/record model.
 - Mainnet call record generator with a SHA-256 record hash.
-- Testnet settlement run record using the official ME faucet.
+- Pilot API and console with API-key auth, idempotency, vendor KYB, daily/monthly caps, and a SHA-256 audit chain.
+- Testnet settlement path using the official ME faucet (run record pending).
 
 ## Evidence of ME usage
 

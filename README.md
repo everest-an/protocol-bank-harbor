@@ -48,6 +48,48 @@ The mandate engine is deny-by-default: an agent request is approved only if the 
 
 Important: the official bridge does **not** mint MEC. MEC is the native gas token and must be obtained separately. The adapter is included as the cross-chain funding path for the product, not as a gas solution.
 
+## Commercial pilot
+
+UBI Guard is packaged as a **non-custodial Agent Spending Control Plane**, not as a neobank:
+
+- **Buyer:** AI agent platforms, AI-native SaaS, and enterprises deploying agent workflows.
+- **Revenue:** $99 Starter / $499 Growth / enterprise SaaS + 10 bps settlement fee.
+- **Pilot:** 3 design partners, 90 days, no platform fee, 10 bps settlement fee.
+- **Compliance posture:** no customer funds, no private keys, no card issuance; settlement is signed by the human/treasury wallet or a partner.
+
+Supporting documents:
+
+- `BUSINESS_PLAN.md` — market, pricing, unit economics, GTM, 12-month plan
+- `PRODUCT_SPEC.md` — mandate/intent state machines, API, acceptance criteria
+- `COMPLIANCE.md` — non-custodial posture, KYB/AML, launch checklist
+- `PILOT_AGREEMENT.md` — 90-day pilot template
+
+### Pilot API and console
+
+The commercial pilot API is in `server/`:
+
+```bash
+PB_API_KEY=pb_pilot_dev_key node server/index.js
+# console: http://localhost:8790
+```
+
+Endpoints:
+
+- `POST /v1/mandates` — create a mandate
+- `GET /v1/mandates` / `GET /v1/mandates/:id`
+- `POST /v1/mandates/:id/authorize` — policy check
+- `POST /v1/mandates/:id/approvals/:intentId/approve` / `deny`
+- `POST /v1/mandates/:id/settlements` — record a settlement tx
+- `POST /v1/mandates/:id/revoke` / `suspend` / `reactivate`
+- `GET /v1/mandates/:id/audit` / `audit/verify`
+- `GET /v1/summary`
+
+All mutating calls require `x-api-key` and `Idempotency-Key`. The audit log is a SHA-256 hash chain. Tests:
+
+```bash
+node --test server/test.js
+```
+
 ## Quick start
 
 Requirements: Node.js 18+.

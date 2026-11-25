@@ -7,7 +7,9 @@
     "demo": "node build/demo.js",
     "demo:bridge": "node build/bridge-demo.js",
     "record:mainnet": "node build/record-mainnet.js",
-    "settle": "node build/settle.js"
+    "settle": "node build/settle.js",
+    "server": "node server/index.js",
+    "test": "node --test server/test.js"
   },
   "keywords": [
     "me-network",

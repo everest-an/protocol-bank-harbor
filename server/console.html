@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protocol Bank — Mandate Console</title>
+<style>
+  :root { --bg:#070b14; --panel:#0d1526; --panel2:#101c33; --line:#1e2d4a; --text:#e6eefc; --muted:#8fa3c4; --cyan:#38bdf8; --green:#34d399; --amber:#fbbf24; --red:#f87171; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:radial-gradient(1000px 500px at 80% -10%,#12305a 0%,transparent 60%),var(--bg); color:var(--text); font-family:"Segoe UI",Inter,system-ui,sans-serif; }
+  .wrap { max-width:1280px; margin:0 auto; padding:28px 24px 60px; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .mark { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--cyan),#2563eb); display:grid; place-items:center; font-weight:800; color:#06101f; }
+  .brand h1 { font-size:17px; margin:0; }
+  .brand p { margin:2px 0 0; color:var(--muted); font-size:12px; }
+  .keybar { display:flex; gap:8px; align-items:center; }
+  input, select, button { font:inherit; }
+  input, select { background:#070c16; border:1px solid var(--line); color:var(--text); border-radius:9px; padding:9px 11px; outline:none; }
+  input:focus, select:focus { border-color:var(--cyan); }
+  button { border:1px solid var(--line); background:#13213a; color:var(--text); border-radius:9px; padding:9px 13px; cursor:pointer; }
+  button:hover { border-color:var(--cyan); }
+  button.primary { background:linear-gradient(135deg,#0ea5e9,#2563eb); border:0; color:#06101f; font-weight:700; }
+  button.danger { border-color:rgba(248,113,113,.5); color:var(--red); }
+  button.ok { border-color:rgba(52,211,153,.5); color:var(--green); }
+  .grid { display:grid; grid-template-columns:360px 1fr; gap:18px; }
+  .card { background:linear-gradient(180deg,rgba(16,28,51,.92),rgba(10,18,34,.92)); border:1px solid var(--line); border-radius:14px; padding:18px; }
+  .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:0 0 14px; }
+  .field { display:grid; gap:5px; margin-bottom:10px; }
+  .field label { font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  .row { display:flex; gap:8px; }
+  .row > * { flex:1; }
+  .list { display:grid; gap:8px; max-height:420px; overflow:auto; }
+  .item { border:1px solid var(--line); border-radius:10px; padding:10px 12px; cursor:pointer; background:rgba(7,12,22,.45); }
+  .item:hover { border-color:var(--cyan); }
+  .item.active { border-color:var(--cyan); background:rgba(56,189,248,.08); }
+  .item .id { font-family:"Cascadia Code",Consolas,monospace; font-size:11px; color:var(--muted); }
+  .item .status { font-size:11px; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:10.5px; border:1px solid var(--line); color:var(--muted); }
+  .pill.active, .pill.approved, .pill.settled { color:var(--green); border-color:rgba(52,211,153,.4); background:rgba(52,211,153,.08); }
+  .pill.blocked, .pill.revoked, .pill.denied, .pill.expired { color:var(--red); border-color:rgba(248,113,113,.4); background:rgba(248,113,113,.08); }
+  .pill.pending_approval { color:var(--amber); border-color:rgba(251,191,36,.4); background:rgba(251,191,36,.08); }
+  .detail-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+  .detail-head h3 { margin:0; font-size:18px; }
+  .mono { font-family:"Cascadia Code",Consolas,monospace; font-size:11.5px; word-break:break-all; }
+  .muted { color:var(--muted); }
+  .kv { display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px solid rgba(30,45,74,.55); font-size:12.5px; }
+  .kv:last-child { border-bottom:0; }
+  .kv .l { color:var(--muted); }
+  .result { border-radius:10px; padding:11px 13px; margin-top:10px; font-size:12.5px; display:none; }
+  .result.show { display:block; }
+  .result.ok { background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.35); }
+  .result.no { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.35); }
+  .result.warn { background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.35); }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th, td { text-align:left; padding:7px 6px; border-bottom:1px solid rgba(30,45,74,.55); vertical-align:top; }
+  th { color:var(--muted); font-weight:500; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; }
+  .toast { position:fixed; right:18px; bottom:18px; background:#0d1526; border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:12.5px; display:none; z-index:10; max-width:480px; }
+  .toast.show { display:block; }
+  .toast.err { border-color:rgba(248,113,113,.5); color:var(--red); }
+  @media (max-width:980px){ .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark">PB</div>
+      <div>
+        <h1>Protocol Bank — Mandate Console</h1>
+        <p>Pilot v1 · deny-by-default spending control for AI agents</p>
+      </div>
+    </div>
+    <div class="keybar">
+      <input id="apiKey" type="password" placeholder="x-api-key" style="width:240px" />
+      <button onclick="saveKey()">Save key</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Create mandate</h2>
+      <div class="field"><label>ME ID</label><input id="meId" value="2611229468093" /></div>
+      <div class="field"><label>Agent ID</label><input id="agentId" value="agent-data-01" /></div>
+      <div class="field"><label>Vendor address</label><input id="vendor" value="me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge" /></div>
+      <div class="field"><label>Vendor name</label><input id="vendorName" value="Demo Data Vendor" /></div>
+      <div class="row">
+        <div class="field"><label>Category</label><input id="category" value="data" /></div>
+        <div class="field"><label>KYB status</label><select id="kyb"><option>approved</option><option>pending</option><option>rejected</option></select></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Per-tx cap (umec)</label><input id="perTx" type="number" value="20000" /></div>
+        <div class="field"><label>Daily cap (umec)</label><input id="daily" type="number" value="40000" /></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Monthly cap (umec)</label><input id="monthly" type="number" value="200000" /></div>
+        <div class="field"><label>Approval above (umec)</label><input id="threshold" type="number" value="12000" /></div>
+      </div>
+      <div class="field"><label>Expiry (days)</label><input id="expiry" type="number" value="30" /></div>
+      <button class="primary" style="width:100%" onclick="createMandate()">Create mandate</button>
+      <div class="muted" style="font-size:11.5px;margin-top:10px">1 MEC = 100,000,000 umec. Caps are in umec.</div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h2 style="margin:0">Mandates</h2>
+        <button onclick="loadMandates()">Refresh</button>
+      </div>
+      <div id="mandateList" class="list"><div class="muted">Save your API key, then create a mandate.</div></div>
+    </div>
+  </div>
+
+  <div id="detail" class="card" style="margin-top:18px;display:none">
+    <div class="detail-head">
+      <div>
+        <h3 id="detailId">—</h3>
+        <div class="mono muted" id="detailMeta">—</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="ok" onclick="verifyAudit()">Verify audit</button>
+        <button class="danger" onclick="revokeMandate()">Revoke</button>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div>
+        <h2>Policy</h2>
+        <div id="policy"></div>
+        <h2 style="margin-top:18px">Authorize payment</h2>
+        <div class="field"><label>Vendor</label><select id="authVendor"></select></div>
+        <div class="row">
+          <div class="field"><label>Amount (umec)</label><input id="authAmount" type="number" value="10000" /></div>
+          <div class="field"><label>Category</label><input id="authCategory" value="data" /></div>
+        </div>
+        <div class="field"><label>Receipt hash</label><input id="authReceipt" value="sha256:demo-receipt-001" /></div>
+        <button class="primary" style="width:100%" onclick="authorizePayment()">Authorize</button>
+        <div id="authResult" class="result"></div>
+      </div>
+      <div>
+        <h2>Pending approvals</h2>
+        <div id="pending"></div>
+        <h2 style="margin-top:18px">Recent intents</h2>
+        <div id="intentList"></div>
+        <h2 style="margin-top:18px">Audit log</h2>
+        <div id="audit" style="max-height:360px;overflow:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+let current = null;
+let intents = [];
+
+function key() { return sessionStorage.getItem('pb_api_key') || ''; }
+function saveKey() {
+  const v = document.getElementById('apiKey').value.trim();
+  if (!v) return toast('Enter an API key first', true);
+  sessionStorage.setItem('pb_api_key', v);
+  toast('API key saved for this tab');
+  loadMandates();
+}
+function idem() {
+  return (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+function toast(msg, err=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  clearTimeout(window.__toast);
+  window.__toast = setTimeout(() => { t.className = 'toast'; }, 4200);
+}
+async function api(path, options={}) {
+  const headers = { 'x-api-key': key() };
+  if (options.body) headers['content-type'] = 'application/json';
+  if (options.method === 'POST') headers['idempotency-key'] = idem();
+  const res = await fetch(path, { ...options, headers: { ...headers, ...(options.headers||{}) } });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data?.error ? `${data.error.code}: ${data.error.message}` : `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+  return data;
+}
+
+async function loadMandates() {
+  if (!key()) return;
+  try {
+    const data = await api('/v1/mandates?limit=50');
+    const list = document.getElementById('mandateList');
+    list.innerHTML = '';
+    if (!data.mandates.length) {
+      list.innerHTML = '<div class="muted">No mandates yet. Create one on the left.</div>';
+      return;
+    }
+    data.mandates.forEach((m) => {
+      const el = document.createElement('div');
+      el.className = 'item' + (current?.id === m.id ? ' active' : '');
+      el.innerHTML = `<div style="display:flex;justify-content:space-between;gap:10px"><span class="mono">${m.id}</span><span class="pill ${m.status}">${m.status}</span></div>
+        <div class="muted" style="font-size:12px;margin-top:4px">ME ID ${m.meId} · agent ${m.agentId}</div>
+        <div class="muted" style="font-size:11.5px;margin-top:2px">spent ${m.spentMonthUmec} / ${m.monthlyCapUmec} umec</div>`;
+      el.onclick = () => selectMandate(m.id);
+      list.appendChild(el);
+    });
+    if (!current && data.mandates.length) selectMandate(data.mandates[0].id);
+  } catch (e) { toast(e.message, true); }
+}
+
+async function selectMandate(id) {
+  try {
+    const [m, i, a] = await Promise.all([
+      api(`/v1/mandates/${id}`),
+      api(`/v1/mandates/${id}/intents`),
+      api(`/v1/mandates/${id}/audit?limit=100`),
+    ]);
+    current = m;
+    intents = i.intents || [];
+    renderDetail(m, intents, a.events || []);
+    loadMandates();
+  } catch (e) { toast(e.message, true); }
+}
+
+function renderDetail(m, its, events) {
+  document.getElementById('detail').style.display = 'block';
+  document.getElementById('detailId').textContent = m.id;
+  document.getElementById('detailMeta').textContent = `ME ID ${m.meId} · agent ${m.agentId} · ${m.status}`;
+  document.getElementById('policy').innerHTML = [
+    ['Status', `<span class="pill ${m.status}">${m.status}</span>`],
+    ['Per-tx cap', `${m.perTxCapUmec} umec`],
+    ['Daily cap', `${m.dailyCapUmec} umec`],
+    ['Monthly cap', `${m.monthlyCapUmec} umec`],
+    ['Approval above', `${m.approvalThresholdUmec} umec`],
+    ['Spent today', `${m.spentTodayUmec} umec`],
+    ['Spent month', `${m.spentMonthUmec} umec`],
+    ['Reserved', `${m.reservedUmec} umec`],
+    ['Expires', m.expiresAt],
+    ['Vendors', m.vendors.map(v => `${v.name} (${v.kybStatus})`).join('<br>')],
+  ].map(([l,v]) => `<div class="kv"><div class="l">${l}</div><div style="text-align:right">${v}</div></div>`).join('');
+
+  const sel = document.getElementById('authVendor');
+  sel.innerHTML = m.vendors.map(v => `<option value="${v.address}">${v.name} — ${v.address.slice(0,12)}…</option>`).join('');
+  document.getElementById('authCategory').value = m.vendors[0]?.category || 'data';
+
+  const pending = its.filter(i => i.status === 'pending_approval');
+  document.getElementById('pending').innerHTML = pending.length ? pending.map(i => `
+    <div class="item" style="cursor:default">
+      <div style="display:flex;justify-content:space-between;gap:8px"><span class="mono">${i.id}</span><span class="pill pending_approval">pending</span></div>
+      <div class="muted" style="font-size:12px;margin-top:4px">${i.amountUmec} umec · ${i.vendor.slice(0,16)}…</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="ok" onclick="approve('${i.id}')">Approve</button>
+        <button class="danger" onclick="deny('${i.id}')">Deny</button>
+      </div>
+    </div>`).join('') : '<div class="muted">No pending approvals.</div>';
+
+  document.getElementById('intentList').innerHTML = its.length ? `<table><thead><tr><th>Intent</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>${its.slice(0,8).map(i => `<tr>
+    <td class="mono">${i.id.slice(0,14)}…</td>
+    <td>${i.amountUmec}</td>
+    <td><span class="pill ${i.status}">${i.status}</span></td>
+    <td>${i.status === 'approved' ? `<button class="ok" onclick="settle('${i.id}')">Settle</button>` : i.txHash ? `<span class="mono">${i.txHash.slice(0,10)}…</span>` : ''}</td>
+  </tr>`).join('')}</tbody></table>` : '<div class="muted">No intents yet.</div>';
+
+  document.getElementById('audit').innerHTML = `<table><thead><tr><th>Seq</th><th>Type</th><th>At</th></tr></thead><tbody>${events.slice().reverse().map(e => `<tr><td>${e.seq}</td><td class="mono">${e.type}</td><td class="mono">${e.at}</td></tr>`).join('')}</tbody></table>`;
+}
+
+async function createMandate() {
+  try {
+    const body = {
+      meId: document.getElementById('meId').value.trim(),
+      agentId: document.getElementById('agentId').value.trim(),
+      vendors: [{
+        address: document.getElementById('vendor').value.trim(),
+        name: document.getElementById('vendorName').value.trim(),
+        category: document.getElementById('category').value.trim(),
+        kybStatus: document.getElementById('kyb').value,
+      }],
+      perTxCapUmec: Number(document.getElementById('perTx').value),
+      dailyCapUmec: Number(document.getElementById('daily').value),
+      monthlyCapUmec: Number(document.getElementById('monthly').value),
+      approvalThresholdUmec: Number(document.getElementById('threshold').value),
+      allowedCategories: [document.getElementById('category').value.trim()],
+      expiryDays: Number(document.getElementById('expiry').value),
+    };
+    const m = await api('/v1/mandates', { method: 'POST', body: JSON.stringify(body) });
+    toast(`Mandate created: ${m.id}`);
+    await loadMandates();
+    await selectMandate(m.id);
+  } catch (e) { toast(e.message, true); }
+}
+
+async function authorizePayment() {
+  if (!current) return;
+  try {
+    const body = {
+      agentId: current.agentId,
+      vendor: document.getElementById('authVendor').value,
+      amountUmec: Number(document.getElementById('authAmount').value),
+      category: document.getElementById('authCategory').value.trim(),
+      receiptHash: document.getElementById('authReceipt').value.trim(),
+    };
+    const r = await api(`/v1/mandates/${current.id}/authorize`, { method: 'POST', body: JSON.stringify(body) });
+    const box = document.getElementById('authResult');
+    box.className = 'result show ' + (r.status === 'approved' ? 'ok' : r.status === 'pending_approval' ? 'warn' : 'no');
+    box.innerHTML = `<strong>${r.status}</strong>${r.code ? ' · ' + r.code : ''}<br><span class="mono">${r.reason || r.memo || ''}</span>`;
+    toast(`Authorization: ${r.status}`);
+    await selectMandate(current.id);
+  } catch (e) { toast(e.message, true); }
+}
+
+async function approve(intentId) {
+  try {
+    await api(`/v1/mandates/${current.id}/approvals/${intentId}/approve`, { method: 'POST', body: JSON.stringify({ approvedBy: 'human:' + current.meId }) });
+    toast('Approved');
+    await selectMandate(current.id);
+  } catch (e) { toast(e.message, true); }
+}
+async function deny(intentId) {
+  try {
+    await api(`/v1/mandates/${current.id}/approvals/${intentId}/deny`, { method: 'POST', body: JSON.stringify({ deniedBy: 'human:' + current.meId, reason: 'denied in console' }) });
+    toast('Denied');
+    await selectMandate(current.id);
+  } catch (e) { toast(e.message, true); }
+}
+
+async function settle(intentId) {
+  if (!current) return;
+  const txHash = prompt('Settlement tx hash (ME testnet/mainnet or partner rail):', `TX-${Date.now()}`);
+  if (!txHash) return;
+  try {
+    await api(`/v1/mandates/${current.id}/settlements`, { method: 'POST', body: JSON.stringify({ intentId, txHash, adapter: 'manual' }) });
+    toast('Settlement recorded');
+    await selectMandate(current.id);
+  } catch (e) { toast(e.message, true); }
+}
+async function revokeMandate() {
+  if (!current) return;
+  if (!confirm('Revoke this mandate? This cannot be undone.')) return;
+  try {
+    await api(`/v1/mandates/${current.id}/revoke`, { method: 'POST', body: JSON.stringify({ revokedBy: 'human:' + current.meId }) });
+    toast('Mandate revoked');
+    await selectMandate(current.id);
+  } catch (e) { toast(e.message, true); }
+}
+async function verifyAudit() {
+  if (!current) return;
+  try {
+    const r = await api(`/v1/mandates/${current.id}/audit/verify`);
+    toast(r.valid ? `Audit valid · ${r.events} events` : `Audit invalid at seq ${r.firstInvalid}: ${r.reason}`, !r.valid);
+  } catch (e) { toast(e.message, true); }
+}
+
+const saved = key();
+if (saved) { document.getElementById('apiKey').value = saved; loadMandates(); }
+</script>
+</body>
+</html>

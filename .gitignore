@@ -4,6 +4,7 @@ me-sdk/
 bridge-inspect/
 build/node_modules/
 build/data/
+server/data/
 *.key
 *.mnemonic*
 .env

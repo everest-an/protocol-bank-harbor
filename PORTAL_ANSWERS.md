@@ -26,6 +26,14 @@ The human root of trust is the ME ID. The demo uses ME ID `2611229468093`; the e
 
 The project also includes an adapter for the official Meta Earth Bridge. It builds and records BSC/TRON USDC/USDT → ME bridge requests, validates the ME recipient, and stores the source and destination transaction hashes. It does not custody funds, does not reimplement the bridge, and does not claim that the bridge mints MEC.
 
+## Commercial model
+
+- **Buyer:** AI agent platforms, AI-native SaaS, enterprises deploying agent workflows, and neobank/card partners that need an agent controls layer.
+- **Pricing:** $99 Starter / $499 Growth / enterprise SaaS, plus 10 bps on settled volume.
+- **Pilot:** 3 design partners, 90 days, no platform fee, 10 bps settlement fee.
+- **Positioning:** non-custodial authorization and audit layer above payment rails; not a neobank, not a UBI distributor.
+- **Why now:** agents are moving from suggesting payments to making payments; the missing layer is a mandate that the agent cannot widen.
+
 ## ME access methods
 
 - ME ID / DID lookup on ME mainnet (`/metaearth/did/did`)
@@ -44,6 +52,7 @@ New work built for HARBOR:
 - UBI Guard mandate engine and demo flow: approve, over-cap block, human approval, revoke.
 - Official ME Bridge adapter and request/record model.
 - Mainnet call record generator with a SHA-256 record hash.
+- Pilot API and console with API-key auth, idempotency, vendor KYB, daily/monthly caps, and a SHA-256 audit chain.
 - Local dashboard and 3–5 minute English demo video.
 
 ## Repository
@@ -68,6 +77,14 @@ node demo/serve.js
 ```
 
 The dashboard is served at `http://localhost:8787`.
+
+Pilot API and console:
+
+```bash
+PB_API_KEY=pb_pilot_dev_key node server/index.js
+```
+
+Open `http://localhost:8790` for the mandate console. Run the tests with `node --test server/test.js`.
 
 Optional mainnet read-only record:
 
