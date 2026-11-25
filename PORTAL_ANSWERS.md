@@ -58,7 +58,7 @@ New work built for HARBOR:
 ## Repository
 
 - URL: `https://github.com/everest-an/protocol-bank-harbor`
-- Final commit: `ebaed18` (latest `master`)
+- Final commit: `fbfba6e` (latest `master`)
 - The repository is public and contains no private keys or mnemonics.
 
 ## Demo video
