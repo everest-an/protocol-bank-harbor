@@ -93,7 +93,7 @@ Protocol Bank already operates an agent-commerce control plane with agent-scoped
 ## Repository
 
 - Repository: `https://github.com/everest-an/protocol-bank-harbor`
-- Final commit: `5b2a69d`
+- Final commit: `98bcd969` (latest `master`)
 - Run instructions: `README.md`
 
 ## Demo video
