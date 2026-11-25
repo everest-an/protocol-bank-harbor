@@ -151,3 +151,6 @@ run-records/           mainnet call records and settlement records
 ## HARBOR submission
 
 Required materials and the project description are in `SUBMISSION.md`.
+
+- Repository: `https://github.com/everest-an/protocol-bank-harbor`
+- Final commit: `5b2a69d`
