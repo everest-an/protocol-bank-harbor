@@ -108,6 +108,13 @@ PROJECT_ADDRESS=me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757 \
 node build/settle.js --to me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge --amount 0.0001 --memo "UBI-GUARD:demo" --dry-run
 ```
 
+## Submission status
+
+- HARBOR registration submitted on 2026-11-25 (team Protocol Bank, captain ME ID `2611229468093`).
+- Pre-submission package sent to `build@openbuild.xyz` on 2026-11-25, requesting the official project portal link.
+- Official project portal: pending publication in the HARBOR community channel.
+- The repository, demo video, mainnet call record, and official bridge adapter are ready for the portal entry.
+
 ## Security and limitations
 
 - The repository does not contain private keys or mnemonics.
