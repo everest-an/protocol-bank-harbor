@@ -1,0 +1,74 @@
+{
+  "project": "Protocol Bank / HARBOR UBI Guard",
+  "network": "ME mainnet",
+  "chainId": "me-chain",
+  "rpc": "http://118.175.0.247:16657",
+  "lcd": "http://118.175.0.247:11317",
+  "block": {
+    "height": 16229680,
+    "hash": "3C6B23389DB22066F982C9010114DC6B2032FC90946141F2A9892F1E0F650570",
+    "time": "2026-11-25T10:38:27.701119717Z"
+  },
+  "meId": {
+    "captain": "me1ken8mcs8r7eklv23c7k7swgf3kgph3maasgk9h",
+    "did": "2611229468093",
+    "status": "DID_STATUS_ACTIVE",
+    "kycLevel": "KYC_LEVEL_ONE",
+    "boundAddress": "me1ken8mcs8r7eklv23c7k7swgf3kgph3maasgk9h"
+  },
+  "balances": {
+    "project": "me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757",
+    "projectUmec": "0",
+    "projectMec": "0.00000000",
+    "vendor": "me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge",
+    "vendorUmec": "0",
+    "vendorMec": "0.00000000"
+  },
+  "chain": {
+    "minimumGasPrice": "0.020000000000000000umec",
+    "supplyUmec": "1821649880716220000",
+    "denomExponent": 8
+  },
+  "mandate": {
+    "id": "mandate-94c5a112",
+    "perTxCapUmec": 20000,
+    "monthlyCapUmec": 60000,
+    "approvalThresholdUmec": 12000,
+    "decision": {
+      "approved": true,
+      "mandate": {
+        "id": "mandate-94c5a112",
+        "meId": "2611229468093",
+        "agentId": "agent-data-01",
+        "vendors": [
+          "me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge"
+        ],
+        "perTxCapUmec": 20000,
+        "monthlyCapUmec": 60000,
+        "approvalThresholdUmec": 12000,
+        "spentUmec": 0,
+        "createdAt": 1795603124487,
+        "expiresAt": 1798195124487,
+        "active": true,
+        "settlements": []
+      },
+      "vendor": "me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge",
+      "amountUmec": 10000,
+      "receiptHash": "mainnet-record-receipt-001",
+      "memo": "PB|meid:2611229468093|mandate:mandate-94c5a112|agent:agent-data-01|vendor:me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge|amount:10000|receipt:mainnet-record-receipt-001",
+      "approvedBy": null
+    }
+  },
+  "settlementPlan": {
+    "from": "me1dppzpwws5lp77h00gx46mq838wa2tzefzfd757",
+    "to": "me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge",
+    "amountUmec": 10000,
+    "amountMec": "0.00010000",
+    "feeUmec": 5000,
+    "feeMec": "0.00005000",
+    "memo": "PB|meid:2611229468093|mandate:mandate-94c5a112|agent:agent-data-01|vendor:me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge|amount:10000|receipt:mainnet-record-receipt-001",
+    "broadcast": false,
+    "reason": "Project treasury has 0 umec; a real broadcast requires MEC gas funding."
+  },
+  "recordHash": "ec9ac4701e6c986e2292ebafe87d208defe680e683c9e9981ad7e446e6e4f561"
+}

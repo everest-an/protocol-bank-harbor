@@ -1,0 +1,26 @@
+{
+  "name": "protocol-bank-harbor",
+  "version": "1.0.0",
+  "description": "Protocol Bank UBI Guard — ME Network spending mandates for AI agents",
+  "main": "build/demo.js",
+  "scripts": {
+    "demo": "node build/demo.js",
+    "demo:bridge": "node build/bridge-demo.js",
+    "record:mainnet": "node build/record-mainnet.js",
+    "settle": "node build/settle.js"
+  },
+  "keywords": [
+    "me-network",
+    "harbor",
+    "ai-agents",
+    "mandate",
+    "mec"
+  ],
+  "author": "Protocol Bank",
+  "license": "MIT",
+  "dependencies": {
+    "@cosmjs/encoding": "^0.39.0",
+    "@cosmjs/proto-signing": "^0.39.0",
+    "@cosmjs/stargate": "^0.39.0"
+  }
+}
