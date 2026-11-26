@@ -93,7 +93,7 @@ Protocol Bank already operates an agent-commerce control plane with agent-scoped
 ## Repository
 
 - Repository: `https://github.com/everest-an/protocol-bank-harbor`
-- Final commit: `98bcd969` (latest `master`)
+- Final code commit: `98bcd969` (later commits are documentation-only)
 - Run instructions: `README.md`
 
 ## Demo video
@@ -120,9 +120,10 @@ node build/settle.js --to me1rnrprnaqmmds6jfdmtxasn03se4j52j6kf8qge --amount 0.0
 
 ## Submission status
 
-- HARBOR registration submitted on 2026-11-25 (team Protocol Bank, captain ME ID `2611229468093`).
+- HARBOR registration submitted on 2026-11-25 (team Protocol Bank, captain ME ID `2611229468093`); the global-edition registration link (`https://forms.gle/Uq3W7npN5Vm4ZQL6A`) resolves to the same form and reports “already responded”.
 - Pre-submission package sent to `build@openbuild.xyz` on 2026-11-25, requesting the official project portal link.
-- Official project portal: pending publication in the HARBOR community channel.
+- Final package emailed again to `build@openbuild.xyz` and `support@mec.me` on 2026-11-26, with repo, video, and mainnet call record.
+- Official project portal: the HARBOR page says it “will be announced via community channels”; the OpenBuild announcement says the submission entry is published through the event community. No public form link exists on the website yet. We are monitoring the official community and organizer replies.
 - The repository, demo video, mainnet call record, and official bridge adapter are ready for the portal entry.
 
 ## Security and limitations
